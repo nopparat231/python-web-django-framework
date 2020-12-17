@@ -35,7 +35,15 @@ def getfiles2():
     folder_path2.set(filename)
     ent2.configure(text=folder_path2)
     foles_old()
-        
+
+def getfiles22():
+
+    global folder_path2
+    filename = filedialog.askdirectory()
+    folder_path2.set(filename)
+    print(filename)
+    
+
 def foles_old():
 
     today = date.today()
@@ -52,7 +60,8 @@ def foles_old():
 
             if FileDate == NowDate:
                 listbox.insert('end',FileDate + "   " + entry.path)
-            
+   
+
 def datet():
     time1 = ''
     time2 = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
@@ -62,36 +71,33 @@ def datet():
         lbl3.config(text=time2)
 
     lbl3.after(200, datet)  
-      
+
+
+# labelra = tk.Label(master)
+# tt = labelra.cget("text")
+tt = '23:16:00'
 
 def Time_run():
-    tt = '24:00:00'
+    
     time1 = ''
     time2 = datetime.datetime.now().strftime('%H:%M:%S')
-    # if time string has changed, update it
+    
+    
     if time2 != time1:
         time1 = time2
         timm = time2
  
     master.after(1000, Time_run)
-    #print(timm)
-    #print(tt)
-    # lb = listbox.get(listbox.curselection())
-    # to = ent2.get()
-    if tt == timm:
-        #copyfile(lb, to)
-        print(timm)
-
-
-def radioCall():
     
-    timesel = tk.StringVar()
-    timesel = var.get() 
+    if tt == timm:
+        print('copy')
+        foles_oldcc()
 
-    # if timesel == '':
-    #     rad2.select()
-    print(timesel)
-
+def radioCall1():
+    labelra.config(text = '12:00:00')
+    
+def radioCall2():
+    labelra.config(text = '24:00:00')
 
 #Copy จาก
 lbl1 = tk.Label(master=frame1,width=10, text="Copy From : ")
@@ -116,18 +122,47 @@ lbl3 = tk.Label(master=frame1 , fg='red')
 lbl3.grid(column=1,row=3)
 
 #radio เลือก
-rad1 = tk.Radiobutton(master=frame1,text='Every day 12:00:00', variable=var, value="12:00:00" , command=radioCall)
+
+rad1 = tk.Radiobutton(master=frame1,text='Every day 12:00:00', value="12:00:00" , command=radioCall1)
 rad1.grid(column=0,row=4) 
-rad2 = tk.Radiobutton(master=frame1,text='Every day 24:00:00', variable=var, value="24:00:00" , command=radioCall)
+rad2 = tk.Radiobutton(master=frame1,text='Every day 24:00:00', value="24:00:00" , command=radioCall2)
 rad2.grid(column=1,row=4)
 
 #ListFiles
-listbox = Listbox(master, width=70, height=5)
-listbox.pack()
+listbox = tk.Listbox(master=frame1)
+listbox.grid(columnspan = 6)
+listbox['width'] = 85
 
-#ปุ่ม Submit
-#btnsubmit = tk.Button(master=frame1,width=10,text="Submit",command=submit)
-#btnsubmit.grid(column=2, row=3)
+
+#สแดงที่เสือก
+labelra = tk.Label(master=frame1,width=10, text="24:00:00", fg='white')
+labelra.grid(column=0,row=6)
+
+teatlb = tk.Label(master=frame1,width=10, text="24:00:00", fg='blue')
+teatlb.grid(column=0,row=7)
+
+       
+def foles_oldcc():
+    
+    today = date.today()
+    NowDate = today.strftime("%d/%m/%Y") #วันนี้
+            
+    res1 = ent1.get()
+    res2 = ent2.get()
+    #lbl3.configure(text=res1)
+    with os.scandir(res1) as i:
+        for entry in i:
+
+            src = os.path.getmtime(entry.path)
+            sctime = datetime.datetime.fromtimestamp(src)
+            FileDate = sctime.strftime("%d/%m/%Y")
+
+            if FileDate == NowDate:
+                #filep = entry
+                print(entry)
+                print(res2)
+                copyfile(entry.path, res2)
+          
 
 Time_run()
 datet()

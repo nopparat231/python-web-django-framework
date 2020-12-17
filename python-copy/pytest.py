@@ -1,24 +1,17 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
- 
 import tkinter as tk
- 
-window = tk.Tk()
-window.title('My Window')
-window.geometry('500x300')
- 
-var = tk.StringVar()
-l = tk.Label(window, bg='white', width=20, text='empty')
-l.pack()
- 
-def print_selection():
-    l.config(text='you have selected ' + var.get())
- 
-r1 = tk.Radiobutton(window, text='Option A', variable=var, value='A', command=print_selection)
-r1.pack()
-r2 = tk.Radiobutton(window, text='Option B', variable=var, value='B', command=print_selection)
-r2.pack()
-r3 = tk.Radiobutton(window, text='Option C', variable=var, value='C', command=print_selection)
-r3.pack()
- 
-window.mainloop()
+my_w = tk.Tk()
+my_w.geometry("500x500")  # Size of the window 
+
+l1 = tk.Listbox(my_w)
+l1.grid(row=1,column=1) 
+
+l1.insert(1,'PHP')   # Adding one element to Listbox 
+l1.insert(2,'Python')
+l1.insert(3,'MySQL')
+
+print(l1.get(0))  # Output PHP
+print(l1.get(2))  # Output MySQL
+ll = l1.get(0)
+lb = tk.Label(my_w,width=10, text=ll, fg='blue')
+lb.grid(row=2,column=1) 
+my_w.mainloop()  # Keep the window open
