@@ -1,4 +1,4 @@
-import os
+import os,shutil
 import os.path, time , datetime
 from datetime import date
 import tkinter as tk
@@ -14,9 +14,9 @@ folder_path1 = StringVar()
 folder_path2 = StringVar()
 var = tk.StringVar()
 
-master.title("Copy Files")
+master.title("Copy Files V18.12.63")
 
-frame1 = tk.Frame(master, width=170, height=50,)
+frame1 = tk.Frame(master, width=170, height=45,)
 frame1.pack()
 
 #ฟังชั่น
@@ -36,14 +36,7 @@ def getfiles2():
     ent2.configure(text=folder_path2)
     foles_old()
 
-def getfiles22():
-
-    global folder_path2
-    filename = filedialog.askdirectory()
-    folder_path2.set(filename)
-    print(filename)
-    
-
+#ค้นหาไฟล์ที่สร้างวันนี้
 def foles_old():
 
     today = date.today()
@@ -59,6 +52,7 @@ def foles_old():
             FileDate = sctime.strftime("%d/%m/%Y")
 
             if FileDate == NowDate:
+
                 listbox.insert('end',FileDate + "   " + entry.path)
    
 
@@ -73,9 +67,9 @@ def datet():
     lbl3.after(200, datet)  
 
 
-# labelra = tk.Label(master)
-# tt = labelra.cget("text")
-tt = '23:16:00'
+labelra = tk.Label(master)
+tt = labelra.cget("text")
+#tt = '22:33:00'
 
 def Time_run():
     
@@ -90,8 +84,15 @@ def Time_run():
     master.after(1000, Time_run)
     
     if tt == timm:
-        print('copy')
-        foles_oldcc()
+        #เมื่อถึงเวลาที่กำหนด 
+        foles_old() #ค้นหาไฟล์ที่เก่ากว่าวันนี้
+        foles_oldcc() #คัดลอกไฟล์ที่อยู่ใน Listbox แล้วลบข้อมูล
+        
+#คำสั่งให้ย้ายข้อมูลทันที
+def Run_now():
+    foles_old()
+    foles_oldcc()
+    
 
 def radioCall1():
     labelra.config(text = '12:00:00')
@@ -100,18 +101,18 @@ def radioCall2():
     labelra.config(text = '24:00:00')
 
 #Copy จาก
-lbl1 = tk.Label(master=frame1,width=10, text="Copy From : ")
+lbl1 = tk.Label(master=frame1,width=10, text="Copy From : ", anchor="e")
 lbl1.grid(column=0,row=0)
-ent1 = tk.Entry(master=frame1,width=50,state="disabled")
+ent1 = tk.Entry(master=frame1,width=60,state="disabled")
 ent1.grid(column=1, row=0)
 ent1.columnconfigure(0, weight=1)
 btn1 = tk.Button(master=frame1,width=10,text="From",command=getfiles1)
 btn1.grid(column=2, row=0)
 
 #Copy ถึง
-lbl2 = tk.Label(master=frame1,width=10, text="Copy To : ")
+lbl2 = tk.Label(master=frame1,width=10, text="Copy To : ", anchor="e")
 lbl2.grid(column=0,row=1)
-ent2 = tk.Entry(master=frame1,width=50,state="disabled")
+ent2 = tk.Entry(master=frame1,width=60,state="disabled")
 ent2.grid(column=1, row=1)
 ent2.columnconfigure(0, weight=1)
 btn2 = tk.Button(master=frame1,width=10,text="To",command=getfiles2)
@@ -123,23 +124,27 @@ lbl3.grid(column=1,row=3)
 
 #radio เลือก
 
-rad1 = tk.Radiobutton(master=frame1,text='Every day 12:00:00', value="12:00:00" , command=radioCall1)
+rad1 = tk.Radiobutton(master=frame1,text='Every day 12:00', value="12:00:00" , command=radioCall1)
 rad1.grid(column=0,row=4) 
-rad2 = tk.Radiobutton(master=frame1,text='Every day 24:00:00', value="24:00:00" , command=radioCall2)
+rad2 = tk.Radiobutton(master=frame1,text='Every day 24:00', value="24:00:00" , command=radioCall2)
 rad2.grid(column=1,row=4)
+
+radnow = tk.Button(master=frame1,width=10,text="RUN Now!",command=Run_now)
+radnow.grid(column=2, row=4)
 
 #ListFiles
 listbox = tk.Listbox(master=frame1)
 listbox.grid(columnspan = 6)
-listbox['width'] = 85
+listbox['width'] = 95
 
 
 #สแดงที่เสือก
 labelra = tk.Label(master=frame1,width=10, text="24:00:00", fg='white')
 labelra.grid(column=0,row=6)
 
-teatlb = tk.Label(master=frame1,width=10, text="24:00:00", fg='blue')
-teatlb.grid(column=0,row=7)
+#cr
+labelra = tk.Label(master=frame1,width=10, text="@Nopparat.IT", fg='gray')
+labelra.grid(column=2,row=6)
 
        
 def foles_oldcc():
@@ -158,10 +163,18 @@ def foles_oldcc():
             FileDate = sctime.strftime("%d/%m/%Y")
 
             if FileDate == NowDate:
-                #filep = entry
-                print(entry)
-                print(res2)
-                copyfile(entry.path, res2)
+                #คำสั่ง Copy Files
+                shutil.copy2(res1+"/"+entry.name, res2)
+                listbox.delete(0,'end')
+                listbox.delete(1,'end')
+                listbox.delete(2,'end')
+                listbox.delete(3,'end')
+                listbox.delete(4,'end')
+                listbox.delete(5,'end')
+                listbox.delete(6,'end')
+                listbox.delete(7,'end')
+                listbox.delete(8,'end')
+                listbox.delete(9,'end')
           
 
 Time_run()
